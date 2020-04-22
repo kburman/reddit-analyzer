@@ -23,9 +23,30 @@ gem 'bootsnap', '>= 1.4.2', require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
+# Background Jobs
+gem 'sidekiq'
+gem 'sidekiq-batch'
+gem "sidekiq-cron", "~> 1.1"
+
+# For make web requests
+gem 'httparty'
+
+# For web page parsing
+gem 'nokogiri'
+
+# Better than `puts`
+gem 'awesome_print'
+
 group :development, :test do
+  # Comment summarizing the current schema
+  gem 'annotate'
+
+  # For Static code analysis
+  gem 'rubocop', require: false
+
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'pry'
 end
 
 group :development do
