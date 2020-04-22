@@ -28,6 +28,8 @@ gem 'sidekiq'
 gem 'sidekiq-batch'
 gem "sidekiq-cron", "~> 1.1"
 
+gem 'connection_pool'
+
 # For make web requests
 gem 'httparty'
 
@@ -36,6 +38,8 @@ gem 'nokogiri'
 
 # Better than `puts`
 gem 'awesome_print'
+
+gem 'dotenv-rails'
 
 group :development, :test do
   # Comment summarizing the current schema
