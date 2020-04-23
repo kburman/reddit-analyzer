@@ -27,6 +27,7 @@ gem 'bootsnap', '>= 1.4.2', require: false
 gem 'sidekiq'
 gem 'sidekiq-batch'
 gem "sidekiq-cron", "~> 1.1"
+gem 'sidekiq-throttler'
 
 gem 'connection_pool'
 
@@ -51,6 +52,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'pry'
+  gem 'pry-nav'
 end
 
 group :development do
