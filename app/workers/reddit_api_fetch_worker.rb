@@ -10,13 +10,15 @@ class RedditApiFetchWorker
     threshold: { limit: 30, period: 1.minute }
   })
 
-  def perform(url, redis_key, fetcher_opt)
+  def perform(url, redis_key_ns, redis_key, fetcher_opt)
     api_response = RedditApiFetchService.call(url, fetcher_opt)
-    REDIS_POOL.with { |conn| conn.set("#{redis_key}:__main__", api_response[:data]) }
+    REDIS_POOL.with do |conn|
+      conn.set("#{redis_key_ns}:#{redis_key}", api_response[:data])
+    end
 
-    api_response[:next_links].each do |key, link|
+    api_response[:next_links].each do |link_key, link|
       batch.jobs do
-        RedditApiFetchWorker.perform_async(link, "#{redis_key}:#{key}", fetcher_opt)
+        RedditApiFetchWorker.perform_async(link, redis_key_ns, link_key, fetcher_opt)
       end
     end
   end

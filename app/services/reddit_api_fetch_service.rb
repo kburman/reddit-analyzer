@@ -73,7 +73,7 @@ class RedditApiFetchService < ApplicationService
       query_params = URI.decode_www_form(next_url.query || '').to_h
       query_params[:after] = after_tag
       next_url.query = URI.encode_www_form(query_params)
-      @next_urls[:after_tag] = next_url
+      @next_urls["after_tag_#{after_tag}"] = next_url
     end
 
     traverse_data(data['data'])
