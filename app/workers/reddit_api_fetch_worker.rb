@@ -2,18 +2,22 @@
 
 class RedditApiFetchWorker
   include Sidekiq::Worker
+  include Sidekiq::Throttled::Worker
 
-  sidekiq_options throttle: { threshold: 30, period: 1.minute }
+  sidekiq_options queue: :reddit_api
+  sidekiq_throttle({
+    concurrency: { limit: 3 },
+    threshold: { limit: 30, period: 1.minute }
+  })
 
-  def perform(url, root_key, options)
-    @url = url
-    @options = options
-
-    api_response = RedditApiFetchService.call(url, options=options)
-    REDIS_POOL.with { |conn| conn.set(root_key, api_response[:data]) }
+  def perform(url, redis_key, fetcher_opt)
+    api_response = RedditApiFetchService.call(url, fetcher_opt)
+    REDIS_POOL.with { |conn| conn.set("#{redis_key}:__main__", api_response[:data]) }
 
     api_response[:next_links].each do |key, link|
-      RedditApiFetchWorker.perform_async(link, "#{root_key}:#{key}", options)
+      batch.jobs do
+        RedditApiFetchWorker.perform_async(link, "#{redis_key}:#{key}", fetcher_opt)
+      end
     end
   end
 end

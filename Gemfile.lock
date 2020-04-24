@@ -159,6 +159,7 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     redis (3.3.5)
+    redis-prescription (1.0.0)
     rexml (3.2.4)
     rubocop (0.82.0)
       jaro_winkler (~> 1.5.1)
@@ -180,9 +181,10 @@ GEM
     sidekiq-cron (1.2.0)
       fugit (~> 1.1)
       sidekiq (>= 4.2.1)
-    sidekiq-throttler (0.5.1)
-      activesupport
-      sidekiq (>= 2.5, < 5.0)
+    sidekiq-throttled (0.11.0)
+      concurrent-ruby
+      redis-prescription
+      sidekiq
     spring (2.1.0)
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
@@ -225,7 +227,7 @@ DEPENDENCIES
   sidekiq
   sidekiq-batch
   sidekiq-cron (~> 1.1)
-  sidekiq-throttler
+  sidekiq-throttled
   spring
   spring-watcher-listen (~> 2.0.0)
   tzinfo-data

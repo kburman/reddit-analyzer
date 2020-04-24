@@ -1,7 +1,11 @@
 require 'sidekiq/web'
 require 'sidekiq/cron/web'
+require "sidekiq/throttled/web"
 
 Rails.application.routes.draw do
+  # Replace Sidekiq Queues with enhanced version!
+  Sidekiq::Throttled::Web.enhance_queues_tab!
+
   Sidekiq::Web.use Rack::Auth::Basic do |username, password|
     # Protect against timing attacks:
     # - See https://codahale.com/a-lesson-in-timing-attacks/

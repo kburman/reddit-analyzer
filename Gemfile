@@ -27,7 +27,7 @@ gem 'bootsnap', '>= 1.4.2', require: false
 gem 'sidekiq'
 gem 'sidekiq-batch'
 gem "sidekiq-cron", "~> 1.1"
-gem 'sidekiq-throttler'
+gem "sidekiq-throttled"
 
 gem 'connection_pool'
 

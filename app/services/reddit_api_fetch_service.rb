@@ -3,10 +3,10 @@
 class RedditApiFetchService < ApplicationService
   FF_UA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36 OPR/38.0.2220.41'
 
-  def initialize(url, options = {})
+  def initialize(url, options)
     @url = URI.parse(url)
     @options = options
-    @more_urls = {}
+    @next_urls = {}
     add_json_to_url
   end
 
@@ -15,13 +15,14 @@ class RedditApiFetchService < ApplicationService
     raise 'HTTP Request Failed' unless api_response.ok?
 
     traverse_data(api_response.parsed_response)
+
     {
       data: api_response.parsed_response,
-      next_links: @more_urls
+      next_links: @next_urls
     }
   end
 
-  # private
+  private
 
   def http_headers
     {
@@ -72,7 +73,7 @@ class RedditApiFetchService < ApplicationService
       query_params = URI.decode_www_form(next_url.query || '').to_h
       query_params[:after] = after_tag
       next_url.query = URI.encode_www_form(query_params)
-      @more_urls[:after_tag] = next_url
+      @next_urls[:after_tag] = next_url
     end
 
     traverse_data(data['data'])
@@ -86,7 +87,7 @@ class RedditApiFetchService < ApplicationService
     children.each do |child|
       plain_url = URI.parse(@url.to_s)
       plain_url.path.gsub!('/.json', "/#{child}/.json")
-      @more_urls["more_#{child}"] = plain_url
+      @next_urls["more_#{child}"] = plain_url
     end
   end
 
