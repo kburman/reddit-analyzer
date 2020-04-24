@@ -40,6 +40,9 @@ gem 'nokogiri'
 # Better than `puts`
 gem 'awesome_print'
 
+# For keeping history of model change
+gem 'paper_trail'
+
 gem 'dotenv-rails'
 
 group :development, :test do
