@@ -11,5 +11,9 @@ class JobPlannerCallbacks
 
   def clear_redis_cache(status, options)
     key_prefix = options['key_prefix']
+    REDIS_POOL.with do |c|
+      keys = c.keys("#{key_prefix}:*")
+      c.del(keys)
+    end
   end
 end

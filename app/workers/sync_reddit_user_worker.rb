@@ -4,10 +4,17 @@ class SyncRedditUserWorker
   include Sidekiq::Worker
 
   def perform(reddit_username)
-    reddit_url = RedditUrlGenerator.instance.user_comments(reddit_username)
-    JobPlannerService.call(reddit_url, SaveRedditResponseWorker, {
-                             fetch_after: true,
-                             fetch_more: true
-                           })
+    full_scrape_opts = {
+      fetch_after: true,
+      fetch_more: true
+    }
+
+    [
+      RedditUrlGenerator.instance.user_overview(reddit_username),
+      RedditUrlGenerator.instance.user_comments(reddit_username),
+      RedditUrlGenerator.instance.user_about(reddit_username)
+    ].each do |url|
+      JobPlannerService.call(url, SaveRedditResponseWorker, full_scrape_opts)
+    end
   end
 end

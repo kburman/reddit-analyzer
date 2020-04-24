@@ -4,10 +4,9 @@ class RedditApiFetchService < ApplicationService
   FF_UA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36 OPR/38.0.2220.41'
 
   def initialize(url, options)
-    @url = URI.parse(url)
+    @url = RedditUrlGenerator.instance.make_json_api(url)
     @options = options
     @next_urls = {}
-    add_json_to_url
   end
 
   def call
@@ -32,14 +31,6 @@ class RedditApiFetchService < ApplicationService
 
   def process_error_code(response_code)
     raise 'HTTP Request Failed' if response_code != 200
-  end
-
-  def add_json_to_url
-    return if @url.path.end_with?('.json')
-
-    path = @url.path.split('/')
-    path << '.json'
-    @url.path = path.join('/')
   end
 
   def traverse_data(data)

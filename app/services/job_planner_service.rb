@@ -22,6 +22,6 @@ class JobPlannerService < ApplicationService
   private
 
   def redis_key_prefix
-    "app-temp:crawl:#{RedisUniqIdService.call}"
+    @redis_key_prefix ||= "app-temp:crawl:#{RedisUniqIdService.call}"
   end
 end
