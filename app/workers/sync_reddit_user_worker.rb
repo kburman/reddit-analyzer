@@ -4,7 +4,7 @@ class SyncRedditUserWorker
   include Sidekiq::Worker
 
   def perform(reddit_username)
-    reddit_url = "https://www.reddit.com/user/#{reddit_username}/comments/"
+    reddit_url = RedditUrlGenerator.instance.user_comments(reddit_username)
     JobPlannerService.call(reddit_url, SaveRedditResponseWorker, {
                              fetch_after: true,
                              fetch_more: true
