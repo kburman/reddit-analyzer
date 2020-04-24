@@ -13,8 +13,9 @@ class RedditApiFetchWorker
   def perform(url, redis_key_ns, redis_key, fetcher_opt)
     api_response = RedditApiFetchService.call(url, fetcher_opt)
     REDIS_POOL.with do |conn|
-      conn.set("#{redis_key_ns}:#{redis_key}", api_response[:data])
+      conn.set("#{redis_key_ns}:#{redis_key}", api_response[:data].to_json)
     end
+
 
     api_response[:next_links].each do |link_key, link|
       batch.jobs do

@@ -14,7 +14,7 @@ class SyncRedditUserWorker
       RedditUrlGenerator.instance.user_comments(reddit_username),
       RedditUrlGenerator.instance.user_about(reddit_username)
     ].each do |url|
-      JobPlannerService.call(url, SaveRedditResponseWorker, full_scrape_opts)
+      JobPlannerService.call(url, ProcessRedditResponseWorker, full_scrape_opts)
     end
   end
 end
