@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class RedisUniqIdService < ApplicationService
-  ID_KEY = "#{Process.pid}:app-uniq-id-seq".freeze
+  ID_KEY = 'app-internal:uniq-id-seq'
 
   def call
-    REDIS_POOL.with { |c| "#{Process.pid}:#{c.incr(ID_KEY)}" }
+    REDIS_POOL.with { |c| c.incr(ID_KEY) }
   end
 end
