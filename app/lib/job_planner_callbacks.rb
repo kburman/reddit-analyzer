@@ -3,6 +3,7 @@
 class JobPlannerCallbacks
   def fetch_complete(status, options)
     key_prefix = options['key_prefix']
+    job_args = options['job_args']
     job_klass = options['job_klass'].constantize
 
     batch = Sidekiq::Batch.new(status.parent_bid)
@@ -11,7 +12,7 @@ class JobPlannerCallbacks
 
       REDIS_POOL.with do |c|
         c.keys("#{key_prefix}:*").each do |key|
-          ProcessRedditResponseWorker.perform_async(key)
+          ProcessRedditResponseWorker.perform_async(key, *job_args)
         end
       end
     end

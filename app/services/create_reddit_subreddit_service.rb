@@ -1,8 +1,9 @@
 class CreateRedditSubredditService < ApplicationService
-  attr_reader :data
+  attr_reader :data, :opts
 
-  def initialize(data)
+  def initialize(data, opts)
     @data = data
+    @opts = opts
   end
 
   def call

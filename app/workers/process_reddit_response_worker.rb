@@ -15,7 +15,8 @@ class ProcessRedditResponseWorker
     't5' => CreateRedditSubredditService,
   }.freeze
 
-  def perform(redis_key)
+  def perform(redis_key, opts)
+    @opts = opts
     data = REDIS_POOL.with { |c| c.get(redis_key) }
     raise StandardError, "No JSON data found at #{redis_key}" if data.blank?
 
@@ -39,7 +40,7 @@ class ProcessRedditResponseWorker
 
   def handle_reddit_obj(data)
     if KIND_MAPPING.key?(data['kind'])
-      KIND_MAPPING[data['kind']].call(data['data'])
+      KIND_MAPPING[data['kind']].call(data['data'], @opts)
     elsif data['kind'] == 'Listing'
       process(data.dig('data', 'children'))
     elsif data['kind'] == 'more'

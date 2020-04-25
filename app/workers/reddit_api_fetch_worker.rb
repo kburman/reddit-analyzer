@@ -16,7 +16,7 @@ class RedditApiFetchWorker
     REDIS_POOL.with do |conn|
       conn.set(api_response_key, api_response[:data].to_json)
     end
-    ProcessRedditResponseWorker.perform_async(api_response_key)
+    ProcessRedditResponseWorker.perform_async(api_response_key, fetcher_opt)
 
     api_response[:next_links].each do |link_key, link|
       batch.jobs do

@@ -83,7 +83,11 @@ class RedditApiFetchService < ApplicationService
   end
 
   def fetch_after?
-    @options['fetch_after']
+    if @options['fetch_after'].is_a?(Integer)
+      (@options['fetch_after'] -= 1).positive?
+    else
+      @options['fetch_after']
+    end
   end
 
   def fetch_more?

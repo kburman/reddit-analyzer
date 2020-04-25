@@ -1,10 +1,10 @@
 class CreateRedditAccountService < ApplicationService
-  attr_reader :data
+  attr_reader :data, :opts
 
-  def initialize(data)
+  def initialize(data, opts)
     @data = data
+    @opts = opts
   end
-
   def call
     puts("Reddit Account #{data['name']}")
     account = RedditAccount.find_or_initialize_by(reddit_id: data['id'])
