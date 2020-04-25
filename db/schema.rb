@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_25_195316) do
+ActiveRecord::Schema.define(version: 2020_04_25_213249) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -118,6 +118,34 @@ ActiveRecord::Schema.define(version: 2020_04_25_195316) do
     t.index ["name"], name: "index_reddit_links_on_name"
     t.index ["reddit_id"], name: "index_reddit_links_on_reddit_id"
     t.index ["subreddit_id"], name: "index_reddit_links_on_subreddit_id"
+  end
+
+  create_table "reddit_subreddits", force: :cascade do |t|
+    t.boolean "restrict_posting"
+    t.text "display_name"
+    t.text "header_img"
+    t.text "title"
+    t.integer "active_user_count"
+    t.text "icon_img"
+    t.integer "accounts_active"
+    t.boolean "public_traffic"
+    t.integer "subscribers"
+    t.text "name"
+    t.boolean "quarantine"
+    t.text "public_description"
+    t.text "header_title"
+    t.datetime "reddit_create_at"
+    t.integer "wls"
+    t.text "subreddit_type"
+    t.text "banner_img"
+    t.text "reddit_id"
+    t.boolean "over_18"
+    t.text "description"
+    t.text "lang"
+    t.datetime "reddit_created_at_utc"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["display_name"], name: "index_reddit_subreddits_on_display_name"
   end
 
   create_table "versions", force: :cascade do |t|
