@@ -10,7 +10,8 @@ class JobPlannerService < ApplicationService
   def call
     overall = Sidekiq::Batch.new
     overall.description = "Reddit API - #{@url} for #{@job_klass}"
-    overall.on(:success, 'JobPlannerCallbacks#clear_redis_cache', 'key_prefix' => redis_key_prefix)
+    overall.on(:success, 'JobPlannerCallbacks#clear_redis_cache',
+      'key_prefix' => redis_key_prefix)
 
     overall.jobs do
       RedditApiPaginationWorker.perform_async(

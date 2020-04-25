@@ -17,6 +17,8 @@ class ProcessRedditResponseWorker
 
   def perform(redis_key)
     data = REDIS_POOL.with { |c| c.get(redis_key) }
+    raise StandardError, "No JSON data found at #{redis_key}" if data.blank?
+
     data = JSON.parse(data)
     process(data)
   end
