@@ -124,6 +124,7 @@ GEM
       method_source (~> 0.9.0)
     pry-nav (0.3.0)
       pry (>= 0.9.10, < 0.13.0)
+    puma (3.12.2)
     raabro (1.1.6)
     rack (2.2.2)
     rack-protection (2.0.8.1)
@@ -228,6 +229,7 @@ DEPENDENCIES
   pg (>= 0.18, < 2.0)
   pry
   pry-nav
+  puma
   rails (~> 6.0.2, >= 6.0.2.1)
   rubocop
   sidekiq
