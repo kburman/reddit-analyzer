@@ -6,7 +6,8 @@ class SyncRedditUserWorker
   def perform(reddit_username)
     full_scrape_opts = {
       fetch_after: true,
-      fetch_more: true
+      fetch_more: true,
+      scrape_commented_post: true,
     }
 
     [

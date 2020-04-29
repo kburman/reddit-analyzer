@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateRedditLinkService < ApplicationService
   attr_reader :data, :opts
 
@@ -45,5 +47,19 @@ class CreateRedditLinkService < ApplicationService
     link.num_crossposts = data['num_crossposts']
     link.is_video = data['is_video']
     link.save!
+
+    # scrape_subreddit
+  end
+
+  private
+
+  def scrape_subreddit
+    subreddit = data['subreddit']
+
+    RedditKeyCacheService.call(subreddit) do
+      if RedditSubreddit.where(reddit_id: data['subreddit_id']).count.zero?
+        SyncRedditSubredditAboutWorker.perform_async(subreddit)
+      end
+    end
   end
 end

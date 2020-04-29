@@ -1,0 +1,4 @@
+sync_watchlist_user:
+  cron: "*/15 * * * *"
+  class: "SyncWatchlistUserWorker"
+  queue: critical

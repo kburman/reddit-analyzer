@@ -82,6 +82,7 @@ GEM
       raabro (~> 1.1)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
+    hiredis (0.6.3)
     httparty (0.18.0)
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
@@ -222,6 +223,7 @@ DEPENDENCIES
   byebug
   connection_pool
   dotenv-rails
+  hiredis
   httparty
   listen (>= 3.0.5, < 3.2)
   nokogiri
@@ -231,6 +233,7 @@ DEPENDENCIES
   pry-nav
   puma
   rails (~> 6.0.2, >= 6.0.2.1)
+  redis
   rubocop
   sidekiq
   sidekiq-batch

@@ -5,12 +5,13 @@ class CreateRedditAccountService < ApplicationService
     @data = data
     @opts = opts
   end
+
   def call
     puts("Reddit Account #{data['name']}")
     account = RedditAccount.find_or_initialize_by(reddit_id: data['id'])
     account.is_employee = data['is_employee']
     account.name = data['name']
-    account.icon_img = data['https://www.redditstatic.com/avatars/avatar_default_10_0DD3BB.png']
+    account.icon_img = data['icon_img']
     account.reddit_created_at = Time.at(data['created'])
     account.reddit_created_at_utc = Time.at(data['created'], in: '+00:00')
     account.has_verified_email = data['has_verified_email']

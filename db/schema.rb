@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_25_213249) do
+ActiveRecord::Schema.define(version: 2020_04_29_180253) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -134,7 +134,7 @@ ActiveRecord::Schema.define(version: 2020_04_25_213249) do
     t.boolean "quarantine"
     t.text "public_description"
     t.text "header_title"
-    t.datetime "reddit_create_at"
+    t.datetime "reddit_created_at"
     t.integer "wls"
     t.text "subreddit_type"
     t.text "banner_img"
@@ -146,6 +146,14 @@ ActiveRecord::Schema.define(version: 2020_04_25_213249) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["display_name"], name: "index_reddit_subreddits_on_display_name"
+  end
+
+  create_table "reddit_user_watch_lists", force: :cascade do |t|
+    t.text "reddit_username"
+    t.boolean "active"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["reddit_username"], name: "index_reddit_user_watch_lists_on_reddit_username", unique: true
   end
 
   create_table "versions", force: :cascade do |t|

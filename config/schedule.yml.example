@@ -1,4 +1,0 @@
-#start_refresh_worker:
-#  cron: "*/5 * * * *"
-#  class: "StartRefreshWorker"
-#  queue: default

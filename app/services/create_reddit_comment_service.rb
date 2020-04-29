@@ -43,7 +43,9 @@ class CreateRedditCommentService < ApplicationService
     @record.depth = data['depth']
     @record.save!
 
-    create_replies(@data['replies'])
+    CreateRedditObjectService.call(@data['replies'])
+    scrape_subreddit
+    # scrape_parent_post
   end
 
   private
@@ -52,13 +54,20 @@ class CreateRedditCommentService < ApplicationService
     @record = RedditComment.find_or_initialize_by(reddit_id: data['id'])
   end
 
-  def create_replies(data)
-    return if data.blank?
-
-    unless data['kind'] == 'Listing'
-      raise "Not a valid replies data #{data['kind']}"
+  def scrape_subreddit
+    redis_key = data['subreddit']
+    RedditKeyCacheService.call(redis_key) do
+      SyncRedditSubredditAboutWorker.perform_async(redis_key)
     end
+  end
 
-    data['data']['children'].each { |c| self.class.call(c) }
+  def scrape_parent_post
+    redis_key = "#{data['subreddit']}-#{data['link_id']}"
+
+    RedditKeyCacheService.call(redis_key) do
+      SyncRedditPostWorker.perform_async(
+        data['subreddit'], data['link_id'].split('_').last
+      )
+    end
   end
 end

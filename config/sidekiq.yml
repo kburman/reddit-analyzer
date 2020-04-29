@@ -1,6 +1,7 @@
-:concurrency: 5
+:concurrency: 10
 
 :queues:
-  - [critical, 2]
-  - reddit_api
-  - default
+  - [critical, 3]
+  - [reddit_api, 3]
+  - [data_crunching, 1]
+  - [default, 1]
